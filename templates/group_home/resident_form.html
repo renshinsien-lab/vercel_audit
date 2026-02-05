@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4 mb-5" style="max-width: 750px;">
+    <div class="d-flex align-items-center mb-4">
+        <a href="{% url 'resident_list' %}" class="btn btn-link text-decoration-none ps-0">
+            <i class="bi bi-chevron-left fs-4 text-dark"></i>
+        </a>
+        <div>
+            <h2 class="h4 mb-0 fw-bold">利用者基本情報の編集</h2>
+            <p class="text-muted small mb-0">{{ resident.name }} 様 の情報を更新します</p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+        <div class="card-body p-4 p-md-5">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">利用者コード</label>
+                        {{ form.resident_code }}
+                        {% if form.resident_code.errors %}<div class="text-danger small">{{ form.resident_code.errors }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">氏名</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">生年月日</label>
+                        {{ form.birth_date }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">要介護度</label>
+                        {{ form.care_level }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">居室番号</label>
+                        {{ form.room_number }}
+                    </div>
+
+                    <div class="col-12">
+                        <hr class="my-3 opacity-10">
+                        <label class="form-label fw-bold small text-muted">既往歴・持病</label>
+                        {{ form.diagnosis }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold small text-muted">緊急連絡先（家族名・電話番号など）</label>
+                        {{ form.emergency_contact }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold small text-muted">特記事項</label>
+                        {{ form.notes }}
+                    </div>
+                </div>
+
+                <div class="d-grid gap-3 mt-5">
+                    <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm">
+                        <i class="bi bi-save2-fill me-2"></i> 変更内容を保存する
+                    </button>
+                    <a href="{% url 'resident_list' %}" class="btn btn-light text-muted">
+                        変更せずに戻る
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

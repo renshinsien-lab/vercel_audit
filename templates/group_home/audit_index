@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>監査トップ</title>
+</head>
+<body>
+
+<h1>監査画面</h1>
+
+<p>
+    本画面は、自治体監査・実地指導向けの閲覧専用画面です。
+</p>
+
+<hr>
+
+<ul>
+    <li>
+        <a href="{% url 'resident_list' %}">
+            利用者一覧を見る
+        </a>
+    </li>
+</ul>
+
+</body>
+</html>

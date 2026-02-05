@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+@page {
+    size: A4;
+    margin: 20mm;
+}
+
+body {
+    font-family: "IPAexGothic", "Noto Sans JP", sans-serif;
+    font-size: 10.5pt;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #333;
+    padding: 4px;
+    vertical-align: top;
+}
+
+th {
+    background: #f0f0f0;
+}
+
+.footer {
+    position: running(footer);
+    font-size: 9pt;
+    text-align: right;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 表紙 -->
+<h1>日常生活記録（監査提出用）</h1>
+
+<p>
+事業所名：{{ office.name }}<br>
+対象期間：{{ records.first.record_date }} 〜 {{ records.last.record_date }}<br>
+出力日：{{ now|date:"Y-m-d" }}
+</p>
+
+<div style="page-break-after: always;"></div>
+
+<!-- 本文 -->
+<table>
+<thead>
+<tr>
+    <th>記録日</th>
+    <th>入居者</th>
+    <th>区分</th>
+    <th>記録内容</th>
+    <th>記録者</th>
+</tr>
+</thead>
+<tbody>
+{% for r in records %}
+<tr>
+    <td>{{ r.record_date|date:"Y-m-d" }}</td>
+    <td>{{ r.resident.name }}</td>
+    <td>{{ r.category }}</td>
+    <td>{{ r.content }}</td>
+    <td>{{ r.created_by.username }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>監査用 日常生活記録・支援計画確認</h1>
+
+<p>
+  本画面は監査用の参照画面です。記録内容の編集・削除はできません。<br>
+  表示条件と出力内容（CSV / PDF）は完全に一致します。
+</p>
+
+<hr>
+
+<!-- ===============================
+     表示条件（③-6 FIX）
+     =============================== -->
+<form method="get" class="mb-3">
+  <fieldset>
+    <legend>表示条件</legend>
+
+    <label>利用者：</label>
+    <select name="resident">
+      <option value="">すべて</option>
+      {% for r in residents %}
+        <option value="{{ r.id }}"
+          {% if request.GET.resident == r.id|stringformat:"s" %}selected{% endif %}>
+          {{ r.name }}
+        </option>
+      {% endfor %}
+    </select>
+
+    &nbsp;&nbsp;
+
+    <label>期間：</label>
+    <input type="date" name="from" value="{{ request.GET.from }}">
+    〜
+    <input type="date" name="to" value="{{ request.GET.to }}">
+
+    &nbsp;&nbsp;
+
+    <button type="submit">表示</button>
+
+    &nbsp;&nbsp;
+
+    <a href="{% url 'audit_log_csv' %}?{{ request.GET.urlencode }}">
+      CSV出力
+    </a>
+
+    &nbsp;&nbsp;
+
+    <a href="{% url 'audit_log_pdf' %}?{{ request.GET.urlencode }}">
+      PDF出力
+    </a>
+  </fieldset>
+</form>
+
+<hr>
+
+<!-- ===============================
+     支援計画（参考情報）
+     =============================== -->
+<h2>支援計画（参考）</h2>
+
+<table border="1" width="100%">
+  <tr>
+    <th>計画番号</th>
+    <th>期間</th>
+    <th>主目標</th>
+  </tr>
+
+  {% for p in plans %}
+  <tr>
+    <td>{{ p.revision_no }}</td>
+    <td>{{ p.start_date }} ～ {{ p.end_date }}</td>
+    <td>{{ p.main_goal }}</td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="3">該当する支援計画はありません</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<hr>
+
+<!-- ===============================
+     日常生活記録（監査主対象）
+     =============================== -->
+<h2>日常生活記録</h2>
+
+<table border="1" width="100%">
+  <tr>
+    <th>日付</th>
+    <th>事業所</th>
+    <th>記録内容</th>
+  </tr>
+
+  {% for d in daily_records %}
+  <tr>
+    <td>{{ d.record_date }}</td>
+    <td>{{ d.office.name|default:"—" }}</td>
+    <td>{{ d.summary|default:"—" }}</td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="3">記録はありません</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<p>
+  ※ 本記録は、現場で作成された記録を電子化したものです。<br>
+  ※ 表示および出力内容は参照専用であり、改変はできません。
+</p>
+
+{% endblock %}
